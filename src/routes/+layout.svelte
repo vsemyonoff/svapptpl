@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Alerts from '$lib/bricks/alerts.svelte';
     import favicon from '$lib/assets/favicon.svg';
     import '$lib/assets/main.css';
 
@@ -15,6 +16,7 @@
     <link rel="icon" href={favicon} />
 </svelte:head>
 
-<div id="rootLayout" class="theme-soft-consumer">
+<div id="root" class="theme-soft-consumer">
+    <Alerts />
     {@render children()}
 </div>

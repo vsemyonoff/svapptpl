@@ -1,2 +1,6 @@
+engineStrict: true
 allowBuilds:
-    esbuild: set this to true or false
+  esbuild: true
+minimumReleaseAgeExclude:
+  - esbuild@0.24.3
+  - cookie@0.7.0
