@@ -2,8 +2,8 @@
   Registration form
 -->
 <script lang="ts">
-    import { triggerAlert } from '$lib/common';
-    import { authClient } from '$lib/auth.client';
+    import { triggerAlert } from '$common/alerts';
+    import { authClient } from '$common/auth';
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
     // import { onMount } from 'svelte';

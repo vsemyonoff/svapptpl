@@ -1,8 +1,21 @@
+/*
+ * Custom classes CSS file
+ *
+ */
+
 @import url('https://googleapis.com');
 
-/*
- * Main CSS file
- */
+@import 'shadcn';
+
+@import '@drop-in/graffiti/core';
+@import '@drop-in/graffiti/components';
+@import '@drop-in/graffiti/layouts';
+@import '@drop-in/graffiti/utilities';
+@import '@drop-in/graffiti/themes';
+
+/* div#root { */
+/*     @apply bg-muted; */
+/* } */
 
 div#root {
     /* space around */

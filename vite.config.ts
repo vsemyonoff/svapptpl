@@ -1,7 +1,8 @@
 import { defineConfig, loadEnv } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
-
 import adapter from '@sveltejs/adapter-node';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'path';
 
 export default defineConfig(({ mode }) => {
     // Parse environment
@@ -13,13 +14,26 @@ export default defineConfig(({ mode }) => {
                 compilerOptions: {
                     // Force runes mode for the project, except for libraries. Can be removed in svelte 6.
                     runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true),
-                    experimental: {
-                        async: true
-                    }
+                    experimental: { async: true }
                 },
-                experimental: {
-                    remoteFunctions: true
+                alias: {
+                    '$src/*': path.resolve(__dirname, './src/*'),
+                    //$assets: path.resolve(__dirname, './src/lib/assets'),
+                    '$assets/*': path.resolve(__dirname, './src/lib/assets/*'),
+                    //$css: path.resolve(__dirname, './src/lib/assets/css'),
+                    '$css/*': path.resolve(__dirname, './src/lib/assets/css/*'),
+                    //$icons: path.resolve(__dirname, './src/lib/assets/icons'),
+                    '$icons/*': path.resolve(__dirname, './src/lib/assets/icons/*'),
+                    //$common: path.resolve(__dirname, './src/lib/common'),
+                    '$common/*': path.resolve(__dirname, './src/lib/common/*'),
+                    //$bricks: path.resolve(__dirname, './src/lib/bricks'),
+                    '$bricks/*': path.resolve(__dirname, './src/lib/bricks/*'),
+                    //$ui: path.resolve(__dirname, './src/lib/bricks/ui'),
+                    '$ui/*': path.resolve(__dirname, './src/lib/bricks/ui/*'),
+                    //$hooks: path.resolve(__dirname, './src/lib/bricks/hooks'),
+                    '$hooks/*': path.resolve(__dirname, './src/lib/bricks/hooks/*')
                 },
+                experimental: { remoteFunctions: true },
                 adapter: adapter(),
                 typescript: {
                     config: (config) => ({
@@ -27,7 +41,8 @@ export default defineConfig(({ mode }) => {
                         include: [...config.include, '../drizzle.config.ts']
                     })
                 }
-            })
+            }),
+            tailwindcss()
         ],
         server: {
             host: env.HOST || 'localhost',

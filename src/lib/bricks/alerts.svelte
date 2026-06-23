@@ -1,5 +1,5 @@
 <script>
-    import { alerts } from '$lib/common';
+    import { alerts } from '$lib/common/alerts';
 </script>
 
 <div id="alerts">

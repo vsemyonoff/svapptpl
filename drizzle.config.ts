@@ -4,7 +4,7 @@ if (!process.env.DB_USER) throw new Error('DB_USER is not set');
 if (!process.env.DB_NAME) throw new Error('DB_NAME is not set');
 
 export default defineConfig({
-    schema: './src/lib/server/db/schema.ts',
+    schema: './src/lib/server/db/main.schema.ts',
     dialect: 'postgresql',
     dbCredentials: {
         host: process.env.DB_HOST || '/var/run/postgresql',

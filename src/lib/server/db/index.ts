@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import * as schema from './schema';
+import * as schema from './main.schema';
 import { env } from '$env/dynamic/private';
 
 if (!env.DB_USER) throw new Error('DB_USER is not set');
