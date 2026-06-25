@@ -2,7 +2,3 @@ engineStrict: true
 allowBuilds:
     esbuild: true
     '@tailwindcss/oxide': true
-    '@hugeicons/svelte': false
-minimumReleaseAgeExclude:
-    - esbuild@0.24.3
-    - cookie@0.7.0

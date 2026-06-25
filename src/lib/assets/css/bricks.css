@@ -1,0 +1,33 @@
+/*
+ * Base form classes
+ *
+ */
+
+.form-base-root {
+    @apply flex flex-col gap-6;
+}
+
+.form-base-header {
+    @apply text-center;
+}
+
+.form-base-title {
+    @apply text-xl;
+}
+
+.form-base-description {
+}
+
+.form-base-buttons {
+    @apply grid grid-cols-2 gap-4;
+}
+
+.form-base-submit {
+}
+
+.form-base-cancel {
+}
+
+.form-register-password {
+    @apply grid grid-cols-2 gap-4;
+}

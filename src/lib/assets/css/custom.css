@@ -3,40 +3,47 @@
  *
  */
 
-@import url('https://googleapis.com');
+/* Force tailwind to scan shadcn-ui components */
+@source '../../bricks/ui';
 
+@import 'bricks';
+@import 'compat';
 @import 'shadcn';
 
-@import '@drop-in/graffiti/core';
-@import '@drop-in/graffiti/components';
-@import '@drop-in/graffiti/layouts';
-@import '@drop-in/graffiti/utilities';
-@import '@drop-in/graffiti/themes';
+/* Tweaks */
+@layer base {
+    *:focus {
+        outline: none;
+    }
 
-/* div#root { */
-/*     @apply bg-muted; */
-/* } */
+    :focus-visible {
+        outline: none;
+        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--ring);
+        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        --tw-ring-opacity: 1;
+    }
+
+    body {
+        @apply subpixel-antialiased;
+    }
+
+    html {
+        @apply scroll-smooth;
+    }
+}
+
+/* Application classes */
+.day-icon {
+    @apply h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90;
+}
+
+.night-icon {
+    @apply absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0;
+}
 
 div#root {
-    /* space around */
-    margin: 0;
-    padding: 0;
-    /* constraints */
-    width: 100%;
-    height: 100%;
-    /* max-width: if(media(width >= 100vh): 75vw; else: 100vw); */
-    /* max-height: if(media(height >= 100vw): 75vw; else: 100vw)min(100vw, 100vh); */
-    /* direction */
-    display: flex;
-    flex-direction: column;
-    /* alignment */
-    align: center;
-    align-items: center;
-    justify-content: center;
-    /* font */
-    font-family:
-        JetBrains Mono,
-        sans-serif;
+    @apply mx-auto h-full w-full max-w-dvw bg-muted p-6 md:p-8;
 }
 
 div#alerts {
@@ -45,3 +52,6 @@ div#alerts {
     left: 1rem;
     z-index: 9999;
 }
+
+/* max-width: if(media(width >= 100vh): 75vw; else: 100vw); */
+/* max-height: if(media(height >= 100vw): 75vw; else: 100vw) */

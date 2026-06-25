@@ -2,10 +2,18 @@
   Registration form
 -->
 <script lang="ts">
-    import { triggerAlert } from '$common/alerts';
+    // import { triggerAlert } from '$common/alerts';
     import { authClient } from '$common/auth';
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
+
+    import RegisterForm from '$bricks/forms/register.svelte';
+
+    let username = $state('');
+    let usermail = $state('');
+    let password = $state('');
+    let pascheck = $state('');
+
     // import { onMount } from 'svelte';
 
     // onMount(() => {
@@ -17,22 +25,7 @@
     //     return () => clearTimeout(timer);
     // });
 
-    async function register(e: Event) {
-        e.preventDefault();
-
-        const form = e.target as HTMLFormElement;
-        const username = form.username.value;
-        const password = form.password.value;
-        const pascheck = form.pascheck.value;
-        const email = form.email.value;
-
-        if (password !== pascheck) {
-            triggerAlert('Passwords do not match', 'error');
-            form.password.value = '';
-            form.pascheck.value = '';
-            return;
-        }
-
+    async function register() {
         // const { data, error } = await authClient.isUsernameAvailable({
         // 	username: 'johndoe' //
         // });
@@ -45,7 +38,7 @@
             {
                 username: username,
                 password: password,
-                email: email,
+                email: usermail,
                 name: username
             },
             {
@@ -56,29 +49,56 @@
         );
     }
 
-    async function cancel(e: Event) {
-        e.preventDefault();
-
+    function cancel() {
         goto(resolve('/'));
     }
 </script>
 
-<h4 class="">New user registration</h4>
-<form class="stack" onsubmit={register}>
-    <label for="username">Username:</label>
-    <input required type="text" id="username" placeholder="new account name" />
+<div class="flex flex-col w-full max-w-sm gap-6">
+    <RegisterForm
+        class="w-full max-w-sm flex-col gap-6"
+        title="Register"
+        onSubmit={{ handler: register }}
+        onCancel={{ handler: cancel }}
+        bind:username
+        bind:usermail
+        bind:password
+        bind:pascheck
+    />
+    <p class="text-center">
+        Already have an account? <a href={resolve('/login')}>Login</a>
+    </p>
+</div>
 
-    <label for="email">Email:</label>
-    <input required type="email" id="email" placeholder="you@example.com" />
+<!--
+    <div class="card w-full max-w-sm flex-col gap-6 text-normal">
+        <div class="card-title">
+            <span class="text-xl text-center">New user registration</span>
+            <span class="text-sm text-center">Create new user account</span>
+        </div>
+        <form class="card-content flex flex-col text-sm gap-2 p-2" onsubmit={register}>
+            <label for="username">User name</label>
+            <input class="input" required type="text" id="username" placeholder="" />
 
-    <label for="password">Password:</label>
-    <input required type="password" id="password" placeholder="new password" />
+            <label for="email">Email</label>
+            <input class="input" required type="email" id="email" placeholder="user@example.com" />
 
-    <label for="pascheck">Password confirm:</label>
-    <input required type="password" id="pascheck" placeholder="repeat new password" />
+            <div class="flex flex-row gap-4">
+                <div class="flex flex-col">
+                    <label for="password">Password</label>
+                    <input class="input" required type="password" id="password" placeholder="" />
+                </div>
 
-    <div class="form-actions">
-        <button type="submit" class="primary">Register</button>
-        <button type="button" class="ghost" onclick={cancel}>Cancel</button>
+                <div class="flex flex-col">
+                    <label for="pascheck">Confirm password</label>
+                    <input class="input" required type="password" id="pascheck" placeholder="" />
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button type="submit" class="button-primary h-9">Register</button>
+                <button type="button" class="button-outline h-9" onclick={cancel}>Cancel</button>
+            </div>
+        </form>
     </div>
-</form>
+-->

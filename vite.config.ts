@@ -4,6 +4,8 @@ import adapter from '@sveltejs/adapter-node';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
+// const ICONS_LIB = '@lucide/svelte';
+
 export default defineConfig(({ mode }) => {
     // Parse environment
     const env = loadEnv(mode, process.cwd(), '');
@@ -16,21 +18,25 @@ export default defineConfig(({ mode }) => {
                     runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true),
                     experimental: { async: true }
                 },
+                // prettier-ignore
                 alias: {
+                    // '$svglib': path.resolve(__dirname, `./node_modules/${ICONS_LIB}`),
+                    // '$svglib/*': path.resolve(__dirname, `./node_modules/${ICONS_LIB}/dist/icons/*`),
+                    '$src': path.resolve(__dirname, './src'),
                     '$src/*': path.resolve(__dirname, './src/*'),
-                    //$assets: path.resolve(__dirname, './src/lib/assets'),
+                    '$assets': path.resolve(__dirname, './src/lib/assets'),
                     '$assets/*': path.resolve(__dirname, './src/lib/assets/*'),
-                    //$css: path.resolve(__dirname, './src/lib/assets/css'),
+                    '$css': path.resolve(__dirname, './src/lib/assets/css'),
                     '$css/*': path.resolve(__dirname, './src/lib/assets/css/*'),
-                    //$icons: path.resolve(__dirname, './src/lib/assets/icons'),
+                    '$icons': path.resolve(__dirname, './src/lib/assets/icons'),
                     '$icons/*': path.resolve(__dirname, './src/lib/assets/icons/*'),
-                    //$common: path.resolve(__dirname, './src/lib/common'),
+                    '$common': path.resolve(__dirname, './src/lib/common'),
                     '$common/*': path.resolve(__dirname, './src/lib/common/*'),
-                    //$bricks: path.resolve(__dirname, './src/lib/bricks'),
+                    '$bricks': path.resolve(__dirname, './src/lib/bricks'),
                     '$bricks/*': path.resolve(__dirname, './src/lib/bricks/*'),
-                    //$ui: path.resolve(__dirname, './src/lib/bricks/ui'),
+                    '$ui': path.resolve(__dirname, './src/lib/bricks/ui'),
                     '$ui/*': path.resolve(__dirname, './src/lib/bricks/ui/*'),
-                    //$hooks: path.resolve(__dirname, './src/lib/bricks/hooks'),
+                    '$hooks': path.resolve(__dirname, './src/lib/bricks/hooks'),
                     '$hooks/*': path.resolve(__dirname, './src/lib/bricks/hooks/*')
                 },
                 experimental: { remoteFunctions: true },
