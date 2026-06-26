@@ -6,7 +6,7 @@
     },
     "aliases": {
         "components": "$lib/bricks",
-        "utils": "$lib/common/utils",
+        "utils": "$lib/client/utils",
         "ui": "$lib/bricks/ui",
         "hooks": "$lib/bricks/hooks",
         "lib": "$lib"

@@ -20,24 +20,27 @@ export default defineConfig(({ mode }) => {
                 },
                 // prettier-ignore
                 alias: {
-                    // '$svglib': path.resolve(__dirname, `./node_modules/${ICONS_LIB}`),
-                    // '$svglib/*': path.resolve(__dirname, `./node_modules/${ICONS_LIB}/dist/icons/*`),
                     '$src': path.resolve(__dirname, './src'),
                     '$src/*': path.resolve(__dirname, './src/*'),
+                    // Assets
                     '$assets': path.resolve(__dirname, './src/lib/assets'),
                     '$assets/*': path.resolve(__dirname, './src/lib/assets/*'),
                     '$css': path.resolve(__dirname, './src/lib/assets/css'),
                     '$css/*': path.resolve(__dirname, './src/lib/assets/css/*'),
                     '$icons': path.resolve(__dirname, './src/lib/assets/icons'),
                     '$icons/*': path.resolve(__dirname, './src/lib/assets/icons/*'),
-                    '$common': path.resolve(__dirname, './src/lib/common'),
-                    '$common/*': path.resolve(__dirname, './src/lib/common/*'),
+                    // UI
                     '$bricks': path.resolve(__dirname, './src/lib/bricks'),
                     '$bricks/*': path.resolve(__dirname, './src/lib/bricks/*'),
                     '$ui': path.resolve(__dirname, './src/lib/bricks/ui'),
                     '$ui/*': path.resolve(__dirname, './src/lib/bricks/ui/*'),
                     '$hooks': path.resolve(__dirname, './src/lib/bricks/hooks'),
-                    '$hooks/*': path.resolve(__dirname, './src/lib/bricks/hooks/*')
+                    '$hooks/*': path.resolve(__dirname, './src/lib/bricks/hooks/*'),
+                    // Library
+                    '$client': path.resolve(__dirname, './src/lib/client'),
+                    '$client/*': path.resolve(__dirname, './src/lib/client/*'),
+                    '$server': path.resolve(__dirname, './src/lib/server'),
+                    '$server/*': path.resolve(__dirname, './src/lib/server/*'),
                 },
                 experimental: { remoteFunctions: true },
                 adapter: adapter(),

@@ -1,4 +1,4 @@
-// src/lib/common/shared.ts
+// src/lib/client/shared.ts
 
 import { setContext, getContext } from 'svelte';
 

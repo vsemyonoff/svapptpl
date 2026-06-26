@@ -2,8 +2,8 @@
   Registration form
 -->
 <script lang="ts">
-    // import { triggerAlert } from '$common/alerts';
-    import { authClient } from '$common/auth';
+    // import { triggerAlert } from '$client/alerts';
+    import { authClient } from '$client/auth';
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
 

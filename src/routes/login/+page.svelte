@@ -2,7 +2,7 @@
   Login form
 -->
 <script lang="ts">
-    import { authClient } from '$common/auth';
+    import { authClient } from '$client/auth';
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
 

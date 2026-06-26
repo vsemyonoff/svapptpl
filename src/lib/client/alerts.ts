@@ -1,4 +1,4 @@
-// src/lib/common/alerts.ts
+// src/lib/client/alerts.ts
 
 import { writable } from 'svelte/store';
 
