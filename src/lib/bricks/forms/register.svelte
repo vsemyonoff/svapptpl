@@ -1,19 +1,16 @@
-<script lang="ts" module>
-    import { type BaseProps } from './base.svelte';
+<script lang="ts">
+    import type { ComponentProps } from 'svelte';
+    import FormBase from './base.svelte';
+    import * as Field from '$ui/field';
+    import { Input } from '$ui/input';
 
-    export type RegisterProps = {
+    type Props = {
         username: string;
         usermail: string;
         password: string;
         pascheck: string;
         constraint?: number;
-    } & BaseProps;
-</script>
-
-<script lang="ts">
-    import FormBase from './base.svelte';
-    import * as Field from '$ui/field';
-    import { Input } from '$ui/input';
+    } & ComponentProps<typeof FormBase>;
 
     function reset(pass?: boolean) {
         password = '';
@@ -41,8 +38,8 @@
     }
 
     function cancel() {
-        reset();
         onCancel?.handler();
+        reset();
     }
 
     let {
@@ -54,7 +51,7 @@
         onSubmit,
         onCancel,
         ...restProps
-    }: RegisterProps = $props();
+    }: Props = $props();
 </script>
 
 <FormBase

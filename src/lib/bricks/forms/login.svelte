@@ -1,16 +1,13 @@
-<script lang="ts" module>
-    import { type BaseProps } from './base.svelte';
-
-    export type RegisterProps = {
-        username: string;
-        password: string;
-    } & BaseProps;
-</script>
-
 <script lang="ts">
+    import type { ComponentProps } from 'svelte';
     import FormBase from './base.svelte';
     import * as Field from '$ui/field';
     import { Input } from '$ui/input';
+
+    type Props = {
+        username: string;
+        password: string;
+    } & ComponentProps<typeof FormBase>;
 
     function reset(pass?: boolean) {
         password = '';
@@ -25,15 +22,10 @@
 
     function cancel() {
         onCancel?.handler();
+        reset();
     }
 
-    let {
-        username = $bindable(''),
-        password = $bindable(''),
-        onSubmit,
-        onCancel,
-        ...restProps
-    }: RegisterProps = $props();
+    let { username = $bindable(''), password = $bindable(''), onSubmit, onCancel, ...restProps }: Props = $props();
 </script>
 
 <FormBase

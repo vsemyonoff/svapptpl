@@ -1,27 +1,23 @@
-<script lang="ts" module>
-    import type { HTMLAttributes } from 'svelte/elements';
+<script lang="ts">
+    import type { ComponentProps } from 'svelte';
+    import { cn } from '$lib/common/utils.js';
+    import { Button } from '$ui/button';
+    import * as Field from '$ui/field';
+    import * as Card from '$ui/card';
 
-    export interface BaseHandler {
+    interface BaseHandler {
         handler: () => void;
         text?: string;
     }
 
-    export type BaseProps = {
+    type Props = {
         title?: string;
         description?: string;
         onSubmit: BaseHandler;
         onCancel?: BaseHandler;
-    } & HTMLAttributes<HTMLDivElement>;
-</script>
+    } & ComponentProps<typeof Card.Root>;
 
-<script lang="ts">
-    import { cn } from '$lib/common/utils.js';
-
-    import * as Card from '$ui/card';
-    import * as Field from '$ui/field';
-    import { Button } from '$ui/button';
-
-    let { class: className, title, description, onSubmit, onCancel, children, ...restProps }: BaseProps = $props();
+    let { class: className, title, description, onSubmit, onCancel, children, ...restProps }: Props = $props();
 
     function submit(e: Event) {
         e.preventDefault();

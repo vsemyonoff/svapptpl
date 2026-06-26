@@ -9,6 +9,10 @@
     import favicon from '$icons/favicon.svg';
     import '$css/custom.css';
 
+    import AppSidebar from '$bricks/appsbar.svelte';
+    import * as Sidebar from '$ui/sidebar';
+    import Button from '$ui/button/button.svelte';
+    import Menu from '@lucide/svelte/icons/menu';
     let { children } = $props();
 </script>
 
@@ -18,33 +22,46 @@
 
 <ModeWatcher />
 
-<div class="flex min-h-screen flex-col">
-    <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-        <nav class="flex items-center justify-between max-w-7xl mx-auto">
-            <span class="font-bold">My App</span>
-            <DropdownMenu.Root>
-                <DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
-                    <SunIcon class="day-icon" />
-                    <MoonIcon class="night-icon" />
-                    <span class="sr-only">Toggle theme</span>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content align="end">
-                    <DropdownMenu.Item onclick={() => setMode('light')}>Light</DropdownMenu.Item>
-                    <DropdownMenu.Item onclick={() => setMode('dark')}>Dark</DropdownMenu.Item>
-                    <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
-                </DropdownMenu.Content>
-            </DropdownMenu.Root>
-        </nav>
-    </header>
+<Sidebar.Provider>
+    <!-- 1. The left-side navigation rail -->
+    <AppSidebar />
 
-    <div class="flex-1 flex">
-        <aside class="hidden w-64 border-r md:block">Main menu:</aside>
-
-        <main class="flex-1 overflow-y-auto">
-            <div id="root">
-                <Alerts />
-                {@render children()}
+    <!-- 2. Main wrapper that shifts layout when sidebar expands -->
+    <Sidebar.Inset>
+        <!-- Top Navbar / Header Section -->
+        <header class="flex h-16 shrink-0 items-center justify-between border-b px-6 bg-background">
+            <div class="flex items-center gap-4">
+                <!-- Built-in trigger toggles desktop/mobile view -->
+                <Sidebar.Trigger>
+                    <Button variant="outline" size="icon">
+                        <Menu class="h-4 w-4" />
+                    </Button>
+                </Sidebar.Trigger>
+                <span class="font-semibold text-lg">My Platform</span>
             </div>
+
+            <Alerts />
+
+            <!-- Right side Navbar elements (e.g., User Profile, Theme Toggle) -->
+            <div class="flex items-center gap-4">
+                <DropdownMenu.Root>
+                    <DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+                        <SunIcon class="day-icon" />
+                        <MoonIcon class="night-icon" />
+                        <span class="sr-only">Toggle theme</span>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content align="end">
+                        <DropdownMenu.Item onclick={() => setMode('light')}>Light</DropdownMenu.Item>
+                        <DropdownMenu.Item onclick={() => setMode('dark')}>Dark</DropdownMenu.Item>
+                        <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                </DropdownMenu.Root>
+            </div>
+        </header>
+
+        <!-- 3. Dynamic Page Body Content -->
+        <main id="root" class="flex-1 overflow-y-auto p-6">
+            {@render children()}
         </main>
-    </div>
-</div>
+    </Sidebar.Inset>
+</Sidebar.Provider>
