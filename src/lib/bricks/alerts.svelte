@@ -1,9 +1,12 @@
 <script>
-    import { alerts } from '$client/alerts';
+    import { getMessageBus } from '$client/alerts.svelte';
+
+    const bus = getMessageBus();
+    const alerts = bus.get();
 </script>
 
 <div id="alerts">
-    {#each $alerts as alert (alert.id)}
+    {#each alerts as alert (alert.id)}
         <div class="callout {alert.type} fill">
             <svg
                 xmlns="http://www.w3.org/2000/svg"

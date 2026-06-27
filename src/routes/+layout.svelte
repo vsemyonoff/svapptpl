@@ -1,51 +1,55 @@
 <script lang="ts">
     import { ModeWatcher, setMode, resetMode } from 'mode-watcher';
-    import Alerts from '$bricks/alerts.svelte';
-    import { buttonVariants } from '$ui/button/index.js';
     import * as DropdownMenu from '$ui/dropdown-menu/index.js';
-    import SunIcon from '@lucide/svelte/icons/sun';
-    import MoonIcon from '@lucide/svelte/icons/moon';
+    import { Button, buttonVariants } from '$ui/button';
+    import AppSidebar from '$bricks/appsbar.svelte';
+    import Toaster from '$bricks/toaster.svelte';
+    import * as Sidebar from '$ui/sidebar';
+    import { page } from '$app/state';
 
-    import favicon from '$icons/favicon.svg';
+    import { MenuIcon, MoonIcon, SunIcon, HouseIcon as HomeIcon, SearchIcon, BellIcon, UserIcon } from '@lucide/svelte';
+    import FavIcon from '$icons/favicon.svg';
+
     import '$css/custom.css';
 
-    import AppSidebar from '$bricks/appsbar.svelte';
-    import * as Sidebar from '$ui/sidebar';
-    import Button from '$ui/button/button.svelte';
-    import Menu from '@lucide/svelte/icons/menu';
+    let formattedTitle = $derived(() => {
+        const path = page.url.pathname.split('/').filter(Boolean).pop();
+        if (!path) return 'Home';
+        return path.charAt(0).toUpperCase() + path.slice(1);
+    });
+
+    let pageTitle = $state('');
+
     let { children } = $props();
 </script>
 
 <svelte:head>
-    <link rel="icon" href={favicon} />
+    <link rel="icon" type="image/svg+xml" href={FavIcon} />
 </svelte:head>
 
 <ModeWatcher />
+<Toaster />
 
-<Sidebar.Provider>
-    <!-- 1. The left-side navigation rail -->
+<Sidebar.Provider open={false}>
     <AppSidebar />
 
-    <!-- 2. Main wrapper that shifts layout when sidebar expands -->
     <Sidebar.Inset>
-        <!-- Top Navbar / Header Section -->
-        <header class="flex h-16 shrink-0 items-center justify-between border-b px-6 bg-background">
+        <header id="global-header">
             <div class="flex items-center gap-4">
-                <!-- Built-in trigger toggles desktop/mobile view -->
-                <Sidebar.Trigger>
+                <Sidebar.Trigger class="hidden md:block">
                     <Button variant="outline" size="icon">
-                        <Menu class="h-4 w-4" />
+                        <MenuIcon class="h-4 w-4" />
                     </Button>
                 </Sidebar.Trigger>
-                <span class="font-semibold text-lg">My Platform</span>
             </div>
 
-            <Alerts />
+            <div class="flex items-center gap-4">
+                <span class="font-bold text-lg">{pageTitle || formattedTitle()}</span>
+            </div>
 
-            <!-- Right side Navbar elements (e.g., User Profile, Theme Toggle) -->
             <div class="flex items-center gap-4">
                 <DropdownMenu.Root>
-                    <DropdownMenu.Trigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+                    <DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <SunIcon class="day-icon" />
                         <MoonIcon class="night-icon" />
                         <span class="sr-only">Toggle theme</span>
@@ -59,9 +63,30 @@
             </div>
         </header>
 
-        <!-- 3. Dynamic Page Body Content -->
-        <main id="root" class="flex-1 overflow-y-auto p-6">
+        <main id="global-content">
             {@render children()}
         </main>
+
+        <footer id="global-footer">
+            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Home">
+                <HomeIcon class="h-5 w-5" />
+                <span class="text-[10px]">Home</span>
+            </Button>
+
+            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Search">
+                <SearchIcon class="h-5 w-5" />
+                <span class="text-[10px]">Search</span>
+            </Button>
+
+            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Notifications">
+                <BellIcon class="h-5 w-5" />
+                <span class="text-[10px]">Alerts</span>
+            </Button>
+
+            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Profile">
+                <UserIcon class="h-5 w-5" />
+                <span class="text-[10px]">Profile</span>
+            </Button>
+        </footer>
     </Sidebar.Inset>
 </Sidebar.Provider>

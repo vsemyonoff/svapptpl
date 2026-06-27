@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte';
+    import { toast } from 'svelte-sonner';
     import FormBase from './base.svelte';
     import * as Field from '$ui/field';
     import { Input } from '$ui/input';
@@ -22,13 +23,13 @@
 
     function register() {
         if (password !== pascheck) {
-            // triggerAlert('Passwords do not match', 'error');
+            toast.error("Passwords don't match");
             reset(true);
             return;
         }
 
         if (password.length < constraint) {
-            // triggerAlert('Password too short', 'error');
+            toast.error('Password too short');
             reset(true);
             return;
         }

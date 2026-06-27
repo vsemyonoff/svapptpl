@@ -28,7 +28,7 @@
 </script>
 
 <FormBase
-    onSubmit={{ handler: validate, text: onSubmit.text || 'Login' }}
+    onSubmit={{ handler: validate, text: onSubmit.text || 'Verify' }}
     onCancel={onCancel ? { handler: cancel, text: onCancel.text || 'Cancel' } : undefined}
     {...restProps}
 >

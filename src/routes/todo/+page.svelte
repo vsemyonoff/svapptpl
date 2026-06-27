@@ -2,9 +2,10 @@
     import OtpForm from '$bricks/forms/otp.svelte';
     import { resolve } from '$app/paths';
     import { goto } from '$app/navigation';
+    import { toast } from 'svelte-sonner';
 
     async function validate() {
-        alert('Vlidate OTP');
+        toast.info('Code validated');
         goto(resolve('/'));
     }
 
@@ -13,21 +14,20 @@
     }
 </script>
 
-<h4>Not implemented yet</h4>
-<p class="fs-xs" style="text-align: center; color: var(--fg-5);">
+<span class="text-center text-xl">Not implemented yet</span>
+<span class="text-center">
     This page is under construction.
     <a href={resolve('/')}>Return to main page</a>
-</p>
+</span>
 
-<div class="flex flex-col w-full max-w-sm gap-6">
+<div class="flex flex-col items-center max-w-max space-y-4">
     <OtpForm
-        class="w-full max-w-sm flex-col gap-6"
         title="Enter verivication code"
         description="We sent a 6-digit code to your email."
         onSubmit={{ handler: validate }}
         onCancel={{ handler: cancel }}
     />
-    <p class="text-center">
+    <p>
         Didn't receive the code? <a href="#/">Resend</a>
     </p>
 </div>
