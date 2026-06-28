@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { ComponentProps } from 'svelte';
     import { type Pathname } from '$app/types';
     import { resolve } from '$app/paths';
     import * as Sidebar from '$ui/sidebar';
@@ -29,12 +30,12 @@
         },
         {
             title: 'Login',
-            url: '/login',
+            url: '/auth/login',
             icon: LoginIcon
         },
         {
             title: 'Register',
-            url: '/register',
+            url: '/auth/register',
             icon: RegisterIcon
         },
         {
@@ -43,16 +44,18 @@
             icon: TodoIcon
         }
     ];
+
+    let { collapsible = 'icon', variant = 'sidebar', ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
 </script>
 
-<Sidebar.Root variant="sidebar" collapsible="icon">
+<Sidebar.Root {variant} {collapsible} {...restProps}>
     <Sidebar.Header>
         <img src={BrandIcon} alt="Logo" class="w-full h-6 object-fill" />
     </Sidebar.Header>
 
     <Sidebar.Content>
         <Sidebar.Group>
-            <Sidebar.GroupLabel>Applications</Sidebar.GroupLabel>
+            <Sidebar.GroupLabel><span class="text-base">Services:</span></Sidebar.GroupLabel>
             <Sidebar.GroupContent>
                 <Sidebar.Menu>
                     {#each items as item (item.title)}
@@ -60,8 +63,8 @@
                             <Sidebar.MenuButton onclick={handleMenuClick}>
                                 {#snippet child({ props })}
                                     <a href={resolve(item.url as Pathname)} {...props}>
-                                        <item.icon />
-                                        <span>{item.title}</span>
+                                        <item.icon class="icon-default" />
+                                        <span class="text-sm">{item.title}</span>
                                     </a>
                                 {/snippet}
                             </Sidebar.MenuButton>

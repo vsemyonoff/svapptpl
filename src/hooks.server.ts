@@ -1,41 +1,46 @@
-// src/hooks.server.ts
 import type { ServerInit } from '@sveltejs/kit';
 import type { Handle } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { building } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
+import { db } from '$server/db';
 
 export const init: ServerInit = async () => {
-    // Prevent initialization logic from executing during the build phase
     if (building) return;
 
     console.log('🚀 Server initialized. Registering shutdown hooks...');
 
-    // Define your teardown routine
+    let exiting = false;
+    let errorCode = 0;
+
     const gracefulShutdown = async (signal: string) => {
+        if (exiting) return;
+        exiting = true;
+
         console.log(`🛑 Received ${signal}. Starting graceful shutdown...`);
 
         try {
-            // Place your resource cleanups here (e.g., db.$disconnect(), redis.quit())
-            // await db.disconnect();
+            if (db.$client) {
+                console.log(
+                    `ℹ️ Closing database connection: ${db.$client.options.database}@${db.$client.options.host}`
+                );
+                await db.$client.end();
+            }
+
             console.log('✅ Resources cleaned up successfully.');
         } catch (error) {
+            errorCode = 1;
+
             console.error('❌ Error during resource cleanup:', error);
         }
 
-        // Always exit the process when manually handling process signals
-        process.exit(0);
+        process.exit(errorCode);
     };
 
-    // 1. PRODUCTION (adapter-node specific)
-    // Supports async operations and runs after the HTTP server stops accepting requests
     process.on('sveltekit:shutdown', async (reason) => {
         await gracefulShutdown(`sveltekit:shutdown (${reason})`);
     });
-
-    // 2. DEVELOPMENT / LOCAL FALLBACKS
-    // Catches Ctrl+C in terminal and termination signals during local development
     process.on('SIGINT', () => gracefulShutdown('SIGINT'));
     process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 };

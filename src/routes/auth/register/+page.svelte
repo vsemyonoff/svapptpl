@@ -53,9 +53,7 @@
         }
     }
 
-    function cancel() {
-        goto(resolve('/'));
-    }
+    function cancel() {}
 </script>
 
 <div class="flex flex-col items-center max-w-max space-y-4">
@@ -69,6 +67,6 @@
         bind:pascheck
     />
     <p>
-        Already have an account? <a href={resolve('/login')}>Login</a>
+        Already have an account? <a href={resolve('/auth/login')}>Login</a>
     </p>
 </div>

@@ -3,8 +3,8 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-node';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
-
-// const ICONS_LIB = '@lucide/svelte';
+// import fs from 'fs';
+// import os from 'os';
 
 export default defineConfig(({ mode }) => {
     // Parse environment
@@ -57,6 +57,10 @@ export default defineConfig(({ mode }) => {
             host: env.HOST || 'localhost',
             port: parseInt(env.PORT) || 0,
             strictPort: true // throw error if PORT is busy
+            // https: {
+            //     cert: fs.readFileSync(`/etc/${os.hostname()}/server-bundle.crt`),
+            //     key: fs.readFileSync(`/etc/${os.hostname()}/server.key`)
+            // }
         }
     };
 });

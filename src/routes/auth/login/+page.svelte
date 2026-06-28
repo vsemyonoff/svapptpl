@@ -30,14 +30,12 @@
         }
     }
 
-    async function cancel() {
-        goto(resolve('/'));
-    }
+    async function cancel() {}
 </script>
 
 <div class="flex flex-col items-center max-w-max space-y-4">
     <LoginForm title="Login" onSubmit={{ handler: login }} onCancel={{ handler: cancel }} bind:username bind:password />
     <p>
-        Don't have an account? <a href={resolve('/register')}>Register</a>
+        Don't have an account? <a href={resolve('/auth/register')}>Register</a>
     </p>
 </div>

@@ -47,13 +47,21 @@
     }
 }
 
+@utility icon-base {
+    @apply h-[1.1rem] w-[1.1rem];
+}
+
 /* Application classes */
 .day-icon {
-    @apply h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90;
+    @apply icon-base scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90;
 }
 
 .night-icon {
-    @apply absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0;
+    @apply icon-base absolute scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0;
+}
+
+.icon-default {
+    @apply icon-base;
 }
 
 /* Main layout classes */

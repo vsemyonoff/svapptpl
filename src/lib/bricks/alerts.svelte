@@ -1,8 +1,7 @@
 <script>
-    import { getMessageBus } from '$client/alerts.svelte';
+    import { useMessageBus } from '$client/alerts.svelte';
 
-    const bus = getMessageBus();
-    const alerts = bus.get();
+    const alerts = useMessageBus().get();
 </script>
 
 <div id="alerts">

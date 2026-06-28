@@ -1,4 +1,3 @@
-// src/lib/client/shared.ts
 import { createContext } from 'svelte';
 
 class SharedValue {

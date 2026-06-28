@@ -1,7 +1,4 @@
-//
-// src/lib/client/alerts.ts
-//
-import { createContext } from 'svelte';
+import { getContext, hasContext, setContext } from 'svelte';
 
 export type Severity = 'debug' | 'info' | 'warning' | 'error';
 
@@ -12,7 +9,7 @@ export interface Message {
 }
 
 export class MessageBus {
-    #alerts = $state<Message[]>([]);
+    #alerts: Message[] = $state([]);
 
     #removeOld(id: number, timeout: number) {
         let nextFreeIndex = 0;
@@ -43,4 +40,9 @@ export class MessageBus {
     }
 }
 
-export const [getMessageBus, setMessageBus] = createContext<MessageBus>();
+const CONTEXT_KEY = crypto.randomUUID();
+
+export const useMessageBus = (): MessageBus => {
+    if (!hasContext(CONTEXT_KEY)) setContext(CONTEXT_KEY, new MessageBus());
+    return getContext(CONTEXT_KEY);
+};
