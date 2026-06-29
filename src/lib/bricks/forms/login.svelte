@@ -15,13 +15,13 @@
         username = '';
     }
 
-    function login() {
-        onSubmit.handler();
+    function login(e: Event) {
+        onSubmit.handler?.(e);
         reset();
     }
 
-    function cancel() {
-        onCancel?.handler();
+    function cancel(e: Event) {
+        onCancel?.handler?.(e);
         reset();
     }
 

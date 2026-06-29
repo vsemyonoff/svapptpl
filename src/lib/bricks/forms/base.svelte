@@ -6,7 +6,7 @@
     import * as Card from '$ui/card';
 
     interface BaseHandler {
-        handler: () => void;
+        handler?: (e: Event) => void;
         text?: string;
     }
 
@@ -21,14 +21,29 @@
 
     function submit(e: Event) {
         e.preventDefault();
-        onSubmit.handler();
+        onSubmit.handler?.(e);
     }
 
     function cancel(e: Event) {
         e.preventDefault();
-        onCancel?.handler();
+        onCancel?.handler?.(e);
+    }
+
+    const id = $props.id();
+    const formId = `form-${id}`;
+
+    function onKeyPress(e: KeyboardEvent) {
+        const form = document.getElementById(formId) as HTMLFormElement;
+        if (e.key === 'Enter' || e.key === 'Return') {
+            form.requestSubmit();
+        }
+        if (e.key === 'Escape') {
+            form.reset();
+        }
     }
 </script>
+
+<svelte:window onkeydown={onKeyPress} />
 
 <Card.Root class={cn('form-base-root', className)} {...restProps}>
     {#if title}
@@ -40,7 +55,7 @@
         </Card.Header>
     {/if}
     <Card.Content>
-        <form onsubmit={submit}>
+        <form id={formId} onsubmit={submit}>
             <Field.Group>
                 {@render children?.()}
                 <Field.Field class="form-base-buttons">

@@ -21,18 +21,18 @@
     {...restProps}
 >
     {#snippet loadingIcon()}
-        <LoaderCircle class="size-4 animate-spin" />
+        <LoaderCircle class="size-6 animate-spin" />
     {/snippet}
     {#snippet successIcon()}
-        <CircleCheckIcon class="size-4 text-green-700" />
+        <CircleCheckIcon class="size-6 text-green-700" />
     {/snippet}
     {#snippet errorIcon()}
-        <OctagonXIcon class="size-4 text-destructive" />
+        <OctagonXIcon class="size-6 text-destructive" />
     {/snippet}
     {#snippet infoIcon()}
-        <InfoIcon class="size-4 text-blue-700" />
+        <InfoIcon class="size-6 text-blue-700" />
     {/snippet}
     {#snippet warningIcon()}
-        <TriangleAlertIcon class="size-4 text-amber-700" />
+        <TriangleAlertIcon class="size-6 text-amber-700" />
     {/snippet}
 </Toaster>

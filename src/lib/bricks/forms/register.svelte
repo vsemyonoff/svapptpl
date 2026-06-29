@@ -21,7 +21,7 @@
         usermail = '';
     }
 
-    function register() {
+    function register(e: Event) {
         if (password !== pascheck) {
             toast.error("Passwords don't match");
             reset(true);
@@ -34,12 +34,12 @@
             return;
         }
 
-        onSubmit.handler();
+        onSubmit.handler?.(e);
         reset();
     }
 
-    function cancel() {
-        onCancel?.handler();
+    function cancel(e: Event) {
+        onCancel?.handler?.(e);
         reset();
     }
 
@@ -63,6 +63,7 @@
     <Field.Field>
         <Field.Label for="name">User name</Field.Label>
         <Input bind:value={username} id="name" type="text" placeholder="" required />
+        <Field.Description>Must be at least 5 characters long.</Field.Description>
     </Field.Field>
 
     <Field.Field>

@@ -14,13 +14,13 @@
         console.log(pass);
     }
 
-    function validate() {
-        onSubmit.handler();
+    function validate(e: Event) {
+        onSubmit.handler?.(e);
         reset();
     }
 
-    function cancel() {
-        onCancel?.handler();
+    function cancel(e: Event) {
+        onCancel?.handler?.(e);
         reset();
     }
 

@@ -52,21 +52,17 @@
             toast.error(`Error: ${error.message || 'unknown'}`);
         }
     }
-
-    function cancel() {}
 </script>
 
-<div class="flex flex-col items-center max-w-max space-y-4">
-    <RegisterForm
-        title="Register"
-        onSubmit={{ handler: register }}
-        onCancel={{ handler: cancel }}
-        bind:username
-        bind:usermail
-        bind:password
-        bind:pascheck
-    />
-    <p>
-        Already have an account? <a href={resolve('/auth/login')}>Login</a>
-    </p>
-</div>
+<RegisterForm
+    title="Register"
+    onSubmit={{ handler: register }}
+    onCancel={{}}
+    bind:username
+    bind:usermail
+    bind:password
+    bind:pascheck
+/>
+<p>
+    Already have an account? <a href={resolve('/auth/login')}>Login</a>
+</p>
