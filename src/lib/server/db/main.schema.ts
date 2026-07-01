@@ -8,7 +8,9 @@ export const post = pgTable(
         title: text().notNull(),
         slug: text().notNull(),
         body: text().notNull(),
-        authorId: text('author_id').references(() => user.id, { onDelete: 'cascade' }),
+        authorId: text('author_id')
+            .references(() => user.id, { onDelete: 'cascade' })
+            .notNull(),
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')
             .defaultNow()

@@ -1,16 +1,15 @@
-import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
-import { getRequestEvent } from '$app/server';
 import { username } from 'better-auth/plugins';
+import { getRequestEvent } from '$app/server';
 import { admin } from 'better-auth/plugins';
 import { env } from '$env/dynamic/private';
+import { betterAuth } from 'better-auth';
 import { db } from '$lib/server/db';
 
-export const auth = betterAuth({
-    secret: env.AUTH_TOKEN,
+export const authServer = betterAuth({
     baseURL: env.AUTH_URL,
-    emailAndPassword: { enabled: true },
+    secret: env.AUTH_TOKEN,
     user: {
         additionalFields: {
             username: {
@@ -19,8 +18,9 @@ export const auth = betterAuth({
             }
         }
     },
+    emailAndPassword: { enabled: true },
     database: drizzleAdapter(db, { provider: 'pg' }),
-    disabledPaths: ['/is-username-available'],
+    // disabledPaths: ['/is-username-available'],
     plugins: [
         admin(),
         username({ minUsernameLength: 5 }),

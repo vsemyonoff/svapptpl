@@ -1,11 +1,15 @@
-import { getContext, hasContext, setContext } from 'svelte';
-import { v4 as uuidv4 } from 'uuid';
+import type { Pathname } from '$app/types';
+import { createContext } from 'svelte';
 
 class PrevPage {
-    #pages: string[] = $state([]);
+    #pages: Pathname[] = $state([]);
     #isBack = false;
 
-    set(page: string) {
+    constructor() {
+        setContext(this);
+    }
+
+    set path(page: string) {
         if (this.#isBack) {
             this.#isBack = false;
             return;
@@ -15,19 +19,17 @@ class PrevPage {
         if (this.#pages.length >= 10) {
             this.#pages.shift();
         }
-        this.#pages.push(page);
+
+        this.#pages.push(page as Pathname);
     }
 
-    get() {
+    get path(): Pathname {
         const page = this.#pages.pop();
         this.#isBack = true;
         return page || '/';
     }
 }
 
-const CONTEXT_KEY = uuidv4();
+const [usePrevPage, setContext] = createContext<PrevPage>();
 
-export const usePrevPage = (): PrevPage => {
-    if (!hasContext(CONTEXT_KEY)) setContext(CONTEXT_KEY, new PrevPage());
-    return getContext(CONTEXT_KEY);
-};
+export { PrevPage, usePrevPage };

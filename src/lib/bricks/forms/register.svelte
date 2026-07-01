@@ -10,7 +10,7 @@
         usermail: string;
         password: string;
         pascheck: string;
-        constraint?: number;
+        pasminlen?: number;
     } & ComponentProps<typeof FormBase>;
 
     function reset(pass?: boolean) {
@@ -21,26 +21,20 @@
         usermail = '';
     }
 
-    function register(e: Event) {
+    async function register(e: Event) {
         if (password !== pascheck) {
             toast.error("Passwords don't match");
             reset(true);
             return;
         }
 
-        if (password.length < constraint) {
+        if (password.length < pasminlen) {
             toast.error('Password too short');
             reset(true);
             return;
         }
 
-        onSubmit.handler?.(e);
-        reset();
-    }
-
-    function cancel(e: Event) {
-        onCancel?.handler?.(e);
-        reset();
+        await onSubmit.handler?.(e);
     }
 
     let {
@@ -48,7 +42,7 @@
         usermail = $bindable(''),
         password = $bindable(''),
         pascheck = $bindable(''),
-        constraint = 8,
+        pasminlen = 8,
         onSubmit,
         onCancel,
         ...restProps
@@ -57,7 +51,7 @@
 
 <FormBase
     onSubmit={{ handler: register, text: onSubmit.text || 'Register' }}
-    onCancel={onCancel ? { handler: cancel, text: onCancel.text || 'Cancel' } : undefined}
+    onCancel={onCancel ? { handler: onCancel.handler, text: onCancel.text || 'Cancel' } : undefined}
     {...restProps}
 >
     <Field.Field>
@@ -82,6 +76,6 @@
                 <Input bind:value={pascheck} id="confirm-password" type="password" required />
             </Field.Field>
         </Field.Field>
-        <Field.Description>Must be at least {constraint} characters long.</Field.Description>
+        <Field.Description>Must be at least {pasminlen} characters long.</Field.Description>
     </Field.Field>
 </FormBase>

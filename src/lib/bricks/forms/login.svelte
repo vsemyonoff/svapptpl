@@ -9,28 +9,12 @@
         password: string;
     } & ComponentProps<typeof FormBase>;
 
-    function reset(pass?: boolean) {
-        password = '';
-        if (pass) return;
-        username = '';
-    }
-
-    function login(e: Event) {
-        onSubmit.handler?.(e);
-        reset();
-    }
-
-    function cancel(e: Event) {
-        onCancel?.handler?.(e);
-        reset();
-    }
-
     let { username = $bindable(''), password = $bindable(''), onSubmit, onCancel, ...restProps }: Props = $props();
 </script>
 
 <FormBase
-    onSubmit={{ handler: login, text: onSubmit.text || 'Login' }}
-    onCancel={onCancel ? { handler: cancel, text: onCancel.text || 'Cancel' } : undefined}
+    onSubmit={{ handler: onSubmit.handler, text: onSubmit.text || 'Login' }}
+    onCancel={onCancel ? { handler: onCancel.handler, text: onCancel.text || 'Cancel' } : undefined}
     {...restProps}
 >
     <Field.Field>

@@ -11,7 +11,7 @@
     toastOptions={{
         unstyled: true,
         classes: {
-            toast: 'flex items-center rounded-xl bg-muted p-2 gap-2 font-mono border',
+            toast: 'flex items-center rounded-xl bg-muted p-2 gap-2 font-mono border min-w-max',
             info: 'border-blue-200 text-blue-700',
             warning: 'border-amber-200 text-amber-700',
             error: 'border-destructive text-destructive',

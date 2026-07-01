@@ -9,27 +9,12 @@
         password?: string;
     } & ComponentProps<typeof FormBase>;
 
-    function reset(pass?: boolean) {
-        // TODO
-        console.log(pass);
-    }
-
-    function validate(e: Event) {
-        onSubmit.handler?.(e);
-        reset();
-    }
-
-    function cancel(e: Event) {
-        onCancel?.handler?.(e);
-        reset();
-    }
-
     let { onSubmit, onCancel, ...restProps }: Props = $props();
 </script>
 
 <FormBase
-    onSubmit={{ handler: validate, text: onSubmit.text || 'Verify' }}
-    onCancel={onCancel ? { handler: cancel, text: onCancel.text || 'Cancel' } : undefined}
+    onSubmit={{ handler: onSubmit.handler, text: onSubmit.text || 'Verify' }}
+    onCancel={onCancel ? { handler: onCancel.handler, text: onCancel.text || 'Cancel' } : undefined}
     {...restProps}
 >
     <Field.Field>

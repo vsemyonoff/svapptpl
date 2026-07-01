@@ -1,5 +1,5 @@
-import { defineConfig, loadEnv } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig, loadEnv } from 'vite';
 import adapter from '@sveltejs/adapter-node';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';

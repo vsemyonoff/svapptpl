@@ -6,11 +6,11 @@
 
     import BrandIcon from '$icons/brand.svg';
     import {
-        UserPlus as RegisterIcon,
         House as HomeIcon,
-        LogIn as LoginIcon,
         ListCheck as TodoIcon,
-        Settings as SettingsIcon
+        NewspaperIcon,
+        TvMinimalPlayIcon,
+        UserStarIcon
     } from '@lucide/svelte';
 
     const sidebar = Sidebar.useSidebar();
@@ -29,19 +29,19 @@
             icon: HomeIcon
         },
         {
-            title: 'Login',
-            url: '/auth/login',
-            icon: LoginIcon
-        },
-        {
-            title: 'Register',
-            url: '/auth/register',
-            icon: RegisterIcon
+            title: 'News',
+            url: '/blog',
+            icon: NewspaperIcon
         },
         {
             title: 'TODO',
             url: '/todo',
             icon: TodoIcon
+        },
+        {
+            title: 'Media MTX',
+            url: '/video',
+            icon: TvMinimalPlayIcon
         }
     ];
 
@@ -80,9 +80,9 @@
             <Sidebar.MenuItem>
                 <Sidebar.MenuButton>
                     {#snippet child({ props })}
-                        <a href={resolve('/')} {...props}>
-                            <SettingsIcon />
-                            <span>Settings</span>
+                        <a href={resolve('/admin')} {...props}>
+                            <UserStarIcon />
+                            <span>Administration</span>
                         </a>
                     {/snippet}
                 </Sidebar.MenuButton>

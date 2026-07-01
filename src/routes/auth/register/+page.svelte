@@ -2,17 +2,13 @@
   Registration form
 -->
 <script lang="ts">
-    import { authClient } from '$client/auth';
-    import { goto } from '$app/navigation';
-    import { resolve } from '$app/paths';
-
     import RegisterForm from '$bricks/forms/register.svelte';
+    import { goto, invalidateAll } from '$app/navigation';
+    import type { Pathname } from '$app/types';
+    import { authClient } from '$client/auth';
     import { toast } from 'svelte-sonner';
-
-    let username = $state('');
-    let usermail = $state('');
-    let password = $state('');
-    let pascheck = $state('');
+    import { resolve } from '$app/paths';
+    import { page } from '$app/state';
 
     // import { onMount } from 'svelte';
 
@@ -25,37 +21,37 @@
     //     return () => clearTimeout(timer);
     // });
 
-    async function register() {
-        // const { data, error } = await authClient.isUsernameAvailable({
-        // 	username: 'johndoe' //
-        // });
-        //
-        // if (data?.available) {
-        // 	console.log('Username can be registered!'); //
-        // }
+    let username = $state('');
+    let usermail = $state('');
+    let password = $state('');
+    let pascheck = $state('');
 
-        let { error } = await authClient.signUp.email(
+    const redirectTo = page.url.searchParams.get('redirectTo') || '/';
+
+    async function register() {
+        await authClient.signUp.email(
             {
                 username: username,
                 password: password,
                 email: usermail,
                 name: username
+                // callbackURL: redirectTo
             },
             {
                 onSuccess: async () => {
-                    goto(resolve('/'));
+                    goto(resolve(redirectTo as Pathname));
+                    await invalidateAll();
+                },
+                onError: async (ctx) => {
+                    toast.error(`Error: ${ctx.error.message || 'unknown'}`);
                 }
             }
         );
-
-        if (error) {
-            toast.error(`Error: ${error.message || 'unknown'}`);
-        }
     }
 </script>
 
 <RegisterForm
-    title="Register"
+    title="New user"
     onSubmit={{ handler: register }}
     onCancel={{}}
     bind:username
@@ -64,5 +60,5 @@
     bind:pascheck
 />
 <p>
-    Already have an account? <a href={resolve('/auth/login')}>Login</a>
+    Already have an account? <a href={resolve(`/auth?redirectTo=${encodeURIComponent(redirectTo)}`)}>Login</a>
 </p>

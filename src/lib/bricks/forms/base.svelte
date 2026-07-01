@@ -1,12 +1,15 @@
 <script lang="ts">
-    import type { ComponentProps } from 'svelte';
+    import type { HTMLAttributes } from 'svelte/elements';
+    import { usePrevPage } from '$client/prevpage.svelte';
+    import { goto } from '$app/navigation';
     import { cn } from '$client/utils.js';
+    import { resolve } from '$app/paths';
     import { Button } from '$ui/button';
     import * as Field from '$ui/field';
     import * as Card from '$ui/card';
 
     interface BaseHandler {
-        handler?: (e: Event) => void;
+        handler?: (e: Event) => Promise<void>;
         text?: string;
     }
 
@@ -15,18 +18,24 @@
         description?: string;
         onSubmit: BaseHandler;
         onCancel?: BaseHandler;
-    } & ComponentProps<typeof Card.Root>;
+    } & HTMLAttributes<HTMLFormElement>;
 
     let { class: className, title, description, onSubmit, onCancel, children, ...restProps }: Props = $props();
 
-    function submit(e: Event) {
+    async function submit(e: Event) {
         e.preventDefault();
-        onSubmit.handler?.(e);
+        await onSubmit.handler?.(e);
     }
 
-    function cancel(e: Event) {
+    const prevPage = usePrevPage();
+
+    async function cancel(e: Event) {
         e.preventDefault();
-        onCancel?.handler?.(e);
+        if (!onCancel?.handler) {
+            goto(resolve(prevPage.path));
+            return;
+        }
+        await onCancel.handler?.(e);
     }
 
     const id = $props.id();
@@ -35,17 +44,21 @@
     function onKeyPress(e: KeyboardEvent) {
         const form = document.getElementById(formId) as HTMLFormElement;
         if (e.key === 'Enter' || e.key === 'Return') {
-            form.requestSubmit();
+            if (onSubmit.handler) {
+                e.preventDefault();
+                form.requestSubmit();
+            }
         }
         if (e.key === 'Escape') {
             form.reset();
         }
+        return e;
     }
 </script>
 
 <svelte:window onkeydown={onKeyPress} />
 
-<Card.Root class={cn('form-base-root', className)} {...restProps}>
+<Card.Root class={cn('form-base-root', className)}>
     {#if title}
         <Card.Header class="form-base-header">
             <Card.Title class="form-base-title">{title}</Card.Title>
@@ -55,7 +68,7 @@
         </Card.Header>
     {/if}
     <Card.Content>
-        <form id={formId} onsubmit={submit}>
+        <form id={formId} onsubmit={submit} {...restProps}>
             <Field.Group>
                 {@render children?.()}
                 <Field.Field class="form-base-buttons">

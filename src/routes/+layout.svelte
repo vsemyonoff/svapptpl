@@ -1,14 +1,15 @@
 <script lang="ts">
     // Libs
+    import { afterNavigate, goto, invalidateAll } from '$app/navigation';
     import { ModeWatcher, setMode, resetMode } from 'mode-watcher';
     import * as DropdownMenu from '$ui/dropdown-menu/index.js';
-    import { afterNavigate, goto } from '$app/navigation';
-    import { usePrevPage } from '$client/prevpage.svelte';
+    import { PrevPage } from '$client/prevpage.svelte';
     import { Button, buttonVariants } from '$ui/button';
-    import AppSidebar from '$bricks/appsbar.svelte';
-    import Toaster from '$bricks/toaster.svelte';
+    import AppSbar from '$bricks/appsbar.svelte';
     import SbarBtn from '$bricks/sbarbtn.svelte';
-    import type { Pathname } from '$app/types';
+    import Toaster from '$bricks/toaster.svelte';
+    import type { LayoutProps } from './$types';
+    import { authClient } from '$client/auth';
     import * as Sidebar from '$ui/sidebar';
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
@@ -28,20 +29,19 @@
     // Styles
     import '$css/custom.css';
 
-    const prevPage = usePrevPage();
-    let pageTitle = $state('');
-    let open = $state(false);
+    const prevPage = new PrevPage();
 
     afterNavigate(({ from }) => {
-        if (from?.url.pathname) {
-            prevPage.set(from.url.pathname);
+        if (from) {
+            prevPage.path = from.url.pathname;
         }
     });
 
     function onPrevPage() {
-        goto(resolve(prevPage.get() as Pathname));
+        goto(resolve(prevPage.path));
     }
 
+    let pageTitle = $state('');
     let formattedTitle = $derived(() => {
         const path = page.url.pathname.split('/').filter(Boolean).pop();
         if (!path) return 'Home';
@@ -49,6 +49,7 @@
     });
 
     let timeoutId: ReturnType<typeof setTimeout>;
+    let open = $state(false);
 
     function onSideBarEnter() {
         clearTimeout(timeoutId);
@@ -64,7 +65,20 @@
         }, 150);
     }
 
-    let { children } = $props();
+    let { data, children }: LayoutProps = $props();
+    let user = $derived(data.user);
+
+    async function onLogout() {
+        if (!user) return;
+
+        await authClient.signOut();
+        // INFO: CRUCIAL. Re-run all server-side `load` functions
+        await invalidateAll();
+    }
+
+    async function onLogin() {
+        goto(resolve(`/auth?redirectTo=${encodeURIComponent(page.url.pathname)}`));
+    }
 </script>
 
 <svelte:head>
@@ -75,7 +89,7 @@
 <Toaster />
 
 <Sidebar.Provider bind:open>
-    <AppSidebar variant="floating" onmouseenter={onSideBarEnter} onmouseleave={onSideBarLeave} />
+    <AppSbar variant="floating" onmouseenter={onSideBarEnter} onmouseleave={onSideBarLeave} />
 
     <Sidebar.Inset>
         <header id="global-header">
@@ -90,6 +104,12 @@
             </div>
 
             <div class="flex items-center gap-4">
+                {#if user}
+                    <Button class="max-w-sm" variant="outline" onclick={onLogout}>Logout</Button>
+                {:else}
+                    <Button class="max-w-sm" variant="outline" onclick={onLogin}>Login</Button>
+                {/if}
+
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <SunIcon class="day-icon" />
