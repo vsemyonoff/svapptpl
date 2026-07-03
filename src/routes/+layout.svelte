@@ -89,7 +89,7 @@
 <Toaster />
 
 <Sidebar.Provider bind:open>
-    <AppSbar variant="floating" onmouseenter={onSideBarEnter} onmouseleave={onSideBarLeave} />
+    <AppSbar items={data.menu} variant="floating" onmouseenter={onSideBarEnter} onmouseleave={onSideBarLeave} />
 
     <Sidebar.Inset>
         <header id="global-header">
