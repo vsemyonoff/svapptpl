@@ -1,5 +1,6 @@
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
+import * as authSchema from '$lib/schema/auth.schema';
 import { username } from 'better-auth/plugins';
 import { getRequestEvent } from '$app/server';
 import { admin } from 'better-auth/plugins';
@@ -19,7 +20,7 @@ export const authServer = betterAuth({
         }
     },
     emailAndPassword: { enabled: true },
-    database: drizzleAdapter(db, { provider: 'pg' }),
+    database: drizzleAdapter(db, { provider: 'pg', schema: authSchema }),
     // disabledPaths: ['/is-username-available'],
     plugins: [
         admin(),

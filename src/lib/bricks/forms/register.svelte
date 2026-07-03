@@ -56,7 +56,7 @@
 >
     <Field.Field>
         <Field.Label for="name">User name</Field.Label>
-        <Input bind:value={username} id="name" type="text" placeholder="" required />
+        <Input bind:value={username} id="name" type="text" autocapitalize="none" required />
         <Field.Description>Must be at least 5 characters long.</Field.Description>
     </Field.Field>
 

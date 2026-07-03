@@ -1,6 +1,6 @@
 import { command, form, getRequestEvent, query } from '$app/server';
-import { error, redirect } from '@sveltejs/kit';
-import { post } from './server/db/main.schema';
+import { post } from '$lib/schema/main.schema';
+import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { db } from '$server/db';
 import * as v from 'valibot';
@@ -10,16 +10,17 @@ export const index = query(async () => {
 });
 
 export const get = query(v.number(), async (id) => {
+    return await db.select().from(post).where(eq(post.id, id));
+});
+
+export const remove = command(v.number(), async (id) => {
     const event = getRequestEvent();
     const user = event.locals.user;
 
     if (!user) error(401, 'Unauthorized');
 
-    return await db.select().from(post).where(eq(post.id, id));
-});
-
-export const remove = command(v.number(), async (id) => {
-    return await db.delete(post).where(eq(post.id, id));
+    await db.delete(post).where(eq(post.id, id));
+    return { success: true };
 });
 
 export const insert = form(
@@ -42,7 +43,7 @@ export const insert = form(
             authorId: user.id
         });
 
-        redirect(303, '/blog');
+        return { success: true };
     }
 );
 
@@ -69,6 +70,6 @@ export const update = form(
             })
             .where(eq(post.id, id));
 
-        redirect(303, '/blog');
+        return { success: true };
     }
 );

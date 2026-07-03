@@ -20,8 +20,6 @@
         onCancel?: BaseHandler;
     } & HTMLAttributes<HTMLFormElement>;
 
-    let { class: className, title, description, onSubmit, onCancel, children, ...restProps }: Props = $props();
-
     async function submit(e: Event) {
         e.preventDefault();
         await onSubmit.handler?.(e);
@@ -54,6 +52,8 @@
         }
         return e;
     }
+
+    let { class: className, title, description, onSubmit, onCancel, children, ...restProps }: Props = $props();
 </script>
 
 <svelte:window onkeydown={onKeyPress} />
@@ -67,14 +67,14 @@
             {/if}
         </Card.Header>
     {/if}
-    <Card.Content>
-        <form id={formId} onsubmit={submit} {...restProps}>
-            <Field.Group>
+    <Card.Content class="form-base-content">
+        <form id={formId} class="form-base-content" onsubmit={submit} {...restProps}>
+            <Field.Group class="form-base-content">
                 {@render children?.()}
                 <Field.Field class="form-base-buttons">
-                    <Button class="form-base-submit" type="submit">{onSubmit.text || 'Submit'}</Button>
+                    <Button class="base-button form-base-submit" type="submit">{onSubmit.text || 'Submit'}</Button>
                     {#if onCancel}
-                        <Button class="form-base-cancel" variant="outline" onclick={cancel}>
+                        <Button class="base-button form-base-cancel" variant="outline" onclick={cancel}>
                             {onCancel.text || 'Cancel'}</Button
                         >
                     {/if}

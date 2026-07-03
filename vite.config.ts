@@ -41,6 +41,8 @@ export default defineConfig(({ mode }) => {
                     '$client/*': path.resolve(__dirname, './src/lib/client/*'),
                     '$server': path.resolve(__dirname, './src/lib/server'),
                     '$server/*': path.resolve(__dirname, './src/lib/server/*'),
+                    '$remote': path.resolve(__dirname, './src/lib/remote'),
+                    '$remote/*': path.resolve(__dirname, './src/lib/remote/*'),
                 },
                 experimental: { remoteFunctions: true },
                 adapter: adapter(),

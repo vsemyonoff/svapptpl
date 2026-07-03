@@ -18,14 +18,24 @@
 .form-base-description {
 }
 
+.form-base-content {
+    @apply h-full;
+}
+
 .form-base-buttons {
     @apply grid grid-cols-2 gap-4;
 }
 
+@utility base-button {
+    @apply max-w-sm;
+}
+
 .form-base-submit {
+    @apply base-button;
 }
 
 .form-base-cancel {
+    @apply base-button;
 }
 
 .form-register-password {
