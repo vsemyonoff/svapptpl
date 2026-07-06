@@ -10,17 +10,6 @@
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
 
-    // import { onMount } from 'svelte';
-
-    // onMount(() => {
-    //     const timer = setTimeout(() => {
-    //         errorMsg.update('');
-    //     }, 3000);
-    //
-    //     // Clean up the timer if the component unmounts
-    //     return () => clearTimeout(timer);
-    // });
-
     let username = $state('');
     let usermail = $state('');
     let password = $state('');
@@ -39,8 +28,9 @@
             },
             {
                 onSuccess: async () => {
-                    goto(resolve(redirectTo as Pathname));
-                    await invalidateAll();
+                    console.log(`registration success, redirecting to : ${redirectTo}`);
+                    await goto(resolve(redirectTo as Pathname));
+                    invalidateAll();
                 },
                 onError: async (ctx) => {
                     toast.error(`Error: ${ctx.error.message || 'unknown'}`);

@@ -9,7 +9,7 @@
 
         const MODULE_URL = 'https://cdn.jsdelivr.net/gh/bluenviron/mediamtx/internal/servers/webrtc/reader.js';
         try {
-            m = await import(MODULE_URL);
+            m = await import(/* @vite-ignore */ MODULE_URL);
         } catch {
             e = true;
         }

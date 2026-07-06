@@ -1,6 +1,6 @@
 <script lang="ts">
     // Libs
-    import { afterNavigate, goto, invalidateAll } from '$app/navigation';
+    import { beforeNavigate, goto, invalidateAll } from '$app/navigation';
     import { ModeWatcher, setMode, resetMode } from 'mode-watcher';
     import { PrevPage } from '$client/prevpage.svelte';
     import * as DropdownMenu from '$ui/dropdown-menu';
@@ -10,6 +10,7 @@
     import type { LayoutProps } from './$types';
     import * as BottomNav from '$ui/bottom-nav';
     import { buttonVariants } from '$ui/button';
+    import type { Pathname } from '$app/types';
     import { authClient } from '$client/auth';
     import FavIcon from '$icons/favicon.svg';
     import * as Icons from '@lucide/svelte';
@@ -32,15 +33,13 @@
 
     const prevPage = new PrevPage();
 
-    afterNavigate(({ from }) => {
-        if (from) {
-            prevPage.path = from.url.pathname;
-        }
+    beforeNavigate((to) => {
+        if (to) prevPage.path = page.route.id || '/';
     });
 
     let pageTitle = $state('');
     let formattedTitle = $derived(() => {
-        const path = page.url.pathname.split('/').filter(Boolean).pop();
+        const path = page.route.id?.split('/').filter(Boolean).pop();
         if (!path) return 'Home';
         return path.charAt(0).toUpperCase() + path.slice(1);
     });
@@ -75,12 +74,11 @@
         if (!user) return;
 
         await authClient.signOut();
-        // INFO: CRUCIAL. Re-run all server-side `load` functions
-        await invalidateAll();
+        invalidateAll();
     }
 
     async function onLogin() {
-        await goto(resolve(`/auth?redirectTo=${encodeURIComponent(page.url.pathname)}`));
+        await goto(resolve(`/auth?redirectTo=${encodeURIComponent(page.route.id || '/')}`));
     }
 </script>
 
@@ -105,8 +103,8 @@
                 <span class="sr-only">Menu toggle</span>
             </div>
 
-            <div class="flex items-center gap-4">
-                <span class="hidden md:inline font-bold text-lg">{pageTitle || formattedTitle()}</span>
+            <div class="flex md:justify-around gap-4 w-full">
+                <span class="font-bold text-lg">{pageTitle || formattedTitle()}</span>
             </div>
 
             <div class="flex items-center gap-4">
@@ -158,7 +156,7 @@
             <BottomNav.Root>
                 {#each data.menu as item (item.title)}
                     {@const Icon = Icons[item.icon as IconsIndex] as Icons.LucideIcon}
-                    <BottomNav.Item href={item.url}>
+                    <BottomNav.Item href={resolve(item.url as Pathname)}>
                         {#if Icon}
                             <Icon class="icon-default" />
                         {/if}

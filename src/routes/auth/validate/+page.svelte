@@ -9,7 +9,7 @@
 
     async function validate() {
         toast.info('Code validated');
-        goto(resolve('/'));
+        await goto(resolve('/'));
     }
 </script>
 

@@ -7,7 +7,7 @@
 @source '../../bricks/ui';
 
 @import 'bricks';
-@import 'compat';
+/* @import 'compat'; */
 @import 'shadcn';
 
 @theme {

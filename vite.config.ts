@@ -10,6 +10,8 @@ export default defineConfig(({ mode }) => {
     // Parse environment
     const env = loadEnv(mode, process.cwd(), '');
 
+    const base = mode === 'production' ? env.BASE || '' : '';
+
     return {
         plugins: [
             sveltekit({
@@ -47,6 +49,9 @@ export default defineConfig(({ mode }) => {
                 experimental: {
                     // explicitEnvironmentVariables: true,
                     remoteFunctions: true
+                },
+                paths: {
+                    base: base ? `/${base}` : undefined
                 },
                 adapter: adapter(),
                 typescript: {

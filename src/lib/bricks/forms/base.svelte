@@ -30,7 +30,7 @@
     async function cancel(e: Event) {
         e.preventDefault();
         if (!onCancel?.handler) {
-            goto(resolve(prevPage.path));
+            await goto(resolve(prevPage.path));
             return;
         }
         await onCancel.handler?.(e);

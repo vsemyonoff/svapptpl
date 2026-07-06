@@ -1,6 +1,6 @@
 <script lang="ts">
     import { insertSchema as postInsertSchema } from '$remote/post/api.schema';
-    import { insert as postInsert } from '$remote/post/api.remote';
+    import { insert as insertPost } from '$remote/post/api.remote';
     import BaseForm from '$bricks/forms/base.svelte';
     import { Textarea } from '$ui/textarea';
     import * as Field from '$ui/field';
@@ -9,13 +9,13 @@
     import { resolve } from '$app/paths';
     import { toast } from 'svelte-sonner';
 
-    type SubmitRemoteFunction = Parameters<typeof postInsert.enhance>[0];
+    type SubmitRemoteFunction = Parameters<typeof insertPost.enhance>[0];
 
     const onSubmit: SubmitRemoteFunction = async (form) => {
         try {
             if (await form.submit()) {
                 form.element.reset();
-                goto(resolve('/blog'));
+                await goto(resolve('/blog'));
             } else {
                 console.log('invalid data');
             }
@@ -25,7 +25,7 @@
     };
 
     $effect(() => {
-        postInsert.fields
+        insertPost.fields
             .allIssues()
             ?.toReversed()
             .forEach((issue) => {
@@ -43,16 +43,16 @@
         description="Create new blog post"
         onSubmit={{ text: 'Create' }}
         onCancel={{}}
-        {...postInsert.preflight(postInsertSchema).enhance(onSubmit)}
+        {...insertPost.preflight(postInsertSchema).enhance(onSubmit)}
     >
         <Field.Field>
             <Field.Label for="title-01">Title</Field.Label>
             <Input bind:value={postTitle} id="title-01" />
-            <input {...postInsert.fields.title.as('text')} type="hidden" value={postTitle} />
+            <input {...insertPost.fields.title.as('text')} type="hidden" value={postTitle} />
         </Field.Field>
         <Field.Field class="h-full">
             <Field.Label for="body">Body</Field.Label>
-            <Textarea id="body" class="h-full" {...postInsert.fields.body.as('text')} />
+            <Textarea id="body" class="h-full" {...insertPost.fields.body.as('text')} />
         </Field.Field>
     </BaseForm>
 </div>

@@ -5,11 +5,14 @@ import { username } from 'better-auth/plugins';
 import { getRequestEvent } from '$app/server';
 import { admin } from 'better-auth/plugins';
 import { env } from '$env/dynamic/private';
+import type { Pathname } from '$app/types';
 import { betterAuth } from 'better-auth';
+import { resolve } from '$app/paths';
 import { db } from '$lib/server/db';
 
 export const authServer = betterAuth({
     baseURL: `${env.AUTH_PROT || env.PROT}://${env.AUTH_HOST || env.HOST}:${env.AUTH_PORT || env.PORT}`,
+    basePath: resolve('/api/auth' as Pathname),
     secret: env.AUTH_TOKEN,
     user: {
         additionalFields: {

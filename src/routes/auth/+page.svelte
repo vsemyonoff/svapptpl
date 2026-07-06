@@ -36,6 +36,6 @@
 </script>
 
 <LoginForm title="Login" onSubmit={{ handler: login }} onCancel={{}} bind:username bind:password />
-<p>
-    Don't have an account? <a href={resolve(`/auth/register?redirectTo=${encodeURIComponent(redirectTo)}`)}>Register</a>
-</p>
+<!-- <p> -->
+<!--     Don't have an account? <a href={resolve(`/auth/register?redirectTo=${encodeURIComponent(redirectTo)}`)}>Register</a> -->
+<!-- </p> -->
