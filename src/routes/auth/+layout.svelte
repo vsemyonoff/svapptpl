@@ -4,6 +4,6 @@
 
 <div class="flex flex-1 flex-col items-center justify-center w-full">
     <div class="flex flex-col items-center max-w-max space-y-4">
-        {@render children?.()}
+        {@render children()}
     </div>
 </div>

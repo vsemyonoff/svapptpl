@@ -36,7 +36,7 @@
     let postTitle = $state('');
 </script>
 
-<div class="flex flex-1 justify-center -ml-18">
+<div class="flex flex-1 justify-center">
     <BaseForm
         class="max-w-2/3"
         title={postTitle}

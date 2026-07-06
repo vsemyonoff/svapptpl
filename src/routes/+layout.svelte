@@ -2,32 +2,33 @@
     // Libs
     import { afterNavigate, goto, invalidateAll } from '$app/navigation';
     import { ModeWatcher, setMode, resetMode } from 'mode-watcher';
-    import * as DropdownMenu from '$ui/dropdown-menu/index.js';
     import { PrevPage } from '$client/prevpage.svelte';
-    import { Button, buttonVariants } from '$ui/button';
+    import * as DropdownMenu from '$ui/dropdown-menu';
     import AppSbar from '$bricks/appsbar.svelte';
     import SbarBtn from '$bricks/sbarbtn.svelte';
     import Toaster from '$bricks/toaster.svelte';
     import type { LayoutProps } from './$types';
+    import * as BottomNav from '$ui/bottom-nav';
+    import { buttonVariants } from '$ui/button';
     import { authClient } from '$client/auth';
+    import FavIcon from '$icons/favicon.svg';
+    import * as Icons from '@lucide/svelte';
     import * as Sidebar from '$ui/sidebar';
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
 
-    // Icons
-    import FavIcon from '$icons/favicon.svg';
-    import {
-        MoonIcon,
-        Undo2Icon,
-        SunIcon,
-        HouseIcon as HomeIcon,
-        SearchIcon,
-        BellIcon,
-        UserIcon
-    } from '@lucide/svelte';
-
     // Styles
     import '$css/custom.css';
+
+    type IconsIndex = keyof typeof Icons;
+
+    // Icons
+    const LogoutIcon = Icons['LogOut'] as Icons.LucideIcon;
+    const LoginIcon = Icons['LogIn'] as Icons.LucideIcon;
+    const OrbitIcon = Icons['Orbit'] as Icons.LucideIcon;
+    const MoonIcon = Icons['Moon'] as Icons.LucideIcon;
+    const UserIcon = Icons['User'] as Icons.LucideIcon;
+    const SunIcon = Icons['Sun'] as Icons.LucideIcon;
 
     const prevPage = new PrevPage();
 
@@ -36,10 +37,6 @@
             prevPage.path = from.url.pathname;
         }
     });
-
-    function onPrevPage() {
-        goto(resolve(prevPage.path));
-    }
 
     let pageTitle = $state('');
     let formattedTitle = $derived(() => {
@@ -51,7 +48,11 @@
     let timeoutId: ReturnType<typeof setTimeout>;
     let open = $state(false);
 
+    let autoHide = $state(true);
+
     function onSideBarEnter() {
+        if (!autoHide) return;
+
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
             open = true;
@@ -59,6 +60,8 @@
     }
 
     function onSideBarLeave() {
+        if (!autoHide) return;
+
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
             open = false;
@@ -77,7 +80,7 @@
     }
 
     async function onLogin() {
-        goto(resolve(`/auth?redirectTo=${encodeURIComponent(page.url.pathname)}`));
+        await goto(resolve(`/auth?redirectTo=${encodeURIComponent(page.url.pathname)}`));
     }
 </script>
 
@@ -94,32 +97,54 @@
     <Sidebar.Inset>
         <header id="global-header">
             <div class="flex items-center gap-4">
-                <Button variant="ghost" onclick={onPrevPage} size="icon">
-                    <Undo2Icon class="icon-default" />
-                </Button>
+                <SbarBtn
+                    onClick={() => {
+                        autoHide = !autoHide;
+                    }}
+                />
+                <span class="sr-only">Menu toggle</span>
             </div>
 
             <div class="flex items-center gap-4">
-                <span class="font-bold text-lg">{pageTitle || formattedTitle()}</span>
+                <span class="hidden md:inline font-bold text-lg">{pageTitle || formattedTitle()}</span>
             </div>
 
             <div class="flex items-center gap-4">
-                {#if user}
-                    <Button class="max-w-sm" variant="outline" onclick={onLogout}>Logout</Button>
-                {:else}
-                    <Button class="max-w-sm" variant="outline" onclick={onLogin}>Login</Button>
+                {#if data.user}
+                    <span class="text-sm">{data.user.name}</span>
                 {/if}
-
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                        <SunIcon class="day-icon" />
-                        <MoonIcon class="night-icon" />
-                        <span class="sr-only">Toggle theme</span>
+                        <UserIcon class="icon-default" />
+                        <span class="sr-only">User menu</span>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content align="end">
-                        <DropdownMenu.Item onclick={() => setMode('light')}>Light</DropdownMenu.Item>
-                        <DropdownMenu.Item onclick={() => setMode('dark')}>Dark</DropdownMenu.Item>
-                        <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+                        <DropdownMenu.Item onclick={() => setMode('light')}>
+                            <SunIcon class="icon-default" />
+                            <span>Light</span>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item onclick={() => setMode('dark')}>
+                            <MoonIcon class="icon-default" />
+                            <span>Dark</span>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item onclick={() => resetMode()}>
+                            <OrbitIcon class="icon-default" />
+                            <span>System</span>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Item
+                            onclick={() => {
+                                if (data.user) onLogout();
+                                else onLogin();
+                            }}
+                        >
+                            {#if data.user}
+                                <LogoutIcon class="icon-default" />
+                            {:else}
+                                <LoginIcon class="icon-default" />
+                            {/if}
+                            <span>{data.user ? 'Logout' : 'Login'}</span>
+                        </DropdownMenu.Item>
                     </DropdownMenu.Content>
                 </DropdownMenu.Root>
             </div>
@@ -130,29 +155,19 @@
         </main>
 
         <footer id="global-footer">
-            <SbarBtn>
-                <span class="text-[10px]">Menu</span>
-            </SbarBtn>
-
-            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Home">
-                <HomeIcon class="icon-default" />
-                <span class="text-[10px]">Home</span>
-            </Button>
-
-            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Search">
-                <SearchIcon class="icon-default" />
-                <span class="text-[10px]">Search</span>
-            </Button>
-
-            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Notifications">
-                <BellIcon class="icon-default" />
-                <span class="text-[10px]">Alerts</span>
-            </Button>
-
-            <Button variant="ghost" size="icon" class="flex flex-col gap-1 h-full flex-1" aria-label="Profile">
-                <UserIcon class="icon-default" />
-                <span class="text-[10px]">Profile</span>
-            </Button>
+            <BottomNav.Root>
+                {#each data.menu as item (item.title)}
+                    {@const Icon = Icons[item.icon as IconsIndex] as Icons.LucideIcon}
+                    <BottomNav.Item href={item.url}>
+                        {#if Icon}
+                            <Icon class="icon-default" />
+                        {/if}
+                        {#if item.title}
+                            <span>{item.title}</span>
+                        {/if}
+                    </BottomNav.Item>
+                {/each}
+            </BottomNav.Root>
         </footer>
     </Sidebar.Inset>
 </Sidebar.Provider>

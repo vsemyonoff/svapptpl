@@ -9,7 +9,7 @@ import { betterAuth } from 'better-auth';
 import { db } from '$lib/server/db';
 
 export const authServer = betterAuth({
-    baseURL: env.AUTH_URL,
+    baseURL: `${env.AUTH_PROT || env.PROT}://${env.AUTH_HOST || env.HOST}:${env.AUTH_PORT || env.PORT}`,
     secret: env.AUTH_TOKEN,
     user: {
         additionalFields: {

@@ -3,12 +3,12 @@
         title: string;
         url: string;
         icon: string;
+        type: 'public' | 'private';
     };
 </script>
 
 <script lang="ts">
     import type { ComponentProps } from 'svelte';
-    import type { LucideIcon } from '@lucide/svelte';
     import { type Pathname } from '$app/types';
     import BrandIcon from '$icons/brand.svg';
     import * as Icons from '@lucide/svelte';
@@ -29,8 +29,6 @@
         items: MenuItem[];
     } & ComponentProps<typeof Sidebar.Root>;
 
-    const UserStarIcon = Icons['UserStarIcon' as IconsIndex] as LucideIcon;
-
     let { collapsible = 'icon', variant = 'sidebar', items, ...restProps }: Props = $props();
 </script>
 
@@ -45,7 +43,7 @@
             <Sidebar.GroupContent>
                 <Sidebar.Menu>
                     {#each items as item (item.title)}
-                        {@const Icon = Icons[item.icon as IconsIndex] as LucideIcon}
+                        {@const Icon = Icons[item.icon as IconsIndex] as Icons.LucideIcon}
                         <Sidebar.MenuItem>
                             <Sidebar.MenuButton onclick={handleMenuClick}>
                                 {#snippet child({ props })}
@@ -65,17 +63,17 @@
     </Sidebar.Content>
 
     <Sidebar.Footer>
-        <Sidebar.Menu>
-            <Sidebar.MenuItem>
-                <Sidebar.MenuButton>
-                    {#snippet child({ props })}
-                        <a href={resolve('/admin')} {...props}>
-                            <UserStarIcon />
-                            <span>Administration</span>
-                        </a>
-                    {/snippet}
-                </Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-        </Sidebar.Menu>
+        <!-- <Sidebar.Menu> -->
+        <!--     <Sidebar.MenuItem> -->
+        <!--         <Sidebar.MenuButton> -->
+        <!--             {#snippet child({ props })} -->
+        <!--                 <a href={resolve('/admin')} {...props}> -->
+        <!--                     <UserStarIcon /> -->
+        <!--                     <span>Administration</span> -->
+        <!--                 </a> -->
+        <!--             {/snippet} -->
+        <!--         </Sidebar.MenuButton> -->
+        <!--     </Sidebar.MenuItem> -->
+        <!-- </Sidebar.Menu> -->
     </Sidebar.Footer>
 </Sidebar.Root>

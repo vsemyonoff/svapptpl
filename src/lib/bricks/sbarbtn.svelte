@@ -5,7 +5,11 @@
     import { Button } from '$ui/button';
     import { cn } from '$client/utils';
 
-    let { ref = $bindable(null), class: className, children, ...restProps }: ComponentProps<typeof Button> = $props();
+    type Props = {
+        onClick?: () => void;
+    } & ComponentProps<typeof Button>;
+
+    let { ref = $bindable(null), onClick, class: className, children, ...restProps }: Props = $props();
 
     const sidebar = useSidebar();
 </script>
@@ -14,10 +18,11 @@
     bind:ref
     variant="ghost"
     size="icon"
-    class={cn('flex flex-col gap-1 h-full flex-1', className)}
+    class={cn('', className)}
     type="button"
     onclick={() => {
         sidebar.toggle();
+        onClick?.();
     }}
     {...restProps}
 >

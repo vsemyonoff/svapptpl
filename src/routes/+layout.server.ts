@@ -10,30 +10,43 @@ const items: MenuItem[] = [
     {
         title: 'Home',
         url: '/',
-        icon: 'House'
+        icon: 'House',
+        type: 'public'
     },
     {
         title: 'Blog',
         url: '/blog',
-        icon: 'Newspaper'
+        icon: 'Newspaper',
+        type: 'public'
     },
     {
         title: 'TODO',
         url: '/todo',
-        icon: 'ListCheck'
+        icon: 'ListCheck',
+        type: 'public'
     },
     {
         title: 'Media MTX',
         url: '/video',
-        icon: 'TvMinimalPlay'
+        icon: 'TvMinimalPlay',
+        type: 'private'
     }
 ];
+
+const getMenu = (user: string) => {
+    const menu: MenuItem[] = [];
+    items.forEach((item) => {
+        if (item.type === 'private' && !user) return;
+        menu.push(item);
+    });
+    return menu;
+};
 
 // Server data loader
 export const load: LayoutServerLoad = async ({ locals }) => {
     // Expose session/user to client
     return {
-        menu: items,
+        menu: getMenu(locals.user?.id || ''),
         session: locals.session,
         user: locals.user
     };

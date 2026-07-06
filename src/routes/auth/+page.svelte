@@ -20,11 +20,11 @@
             {
                 username: username,
                 password: password
-                // callbackURL: path
             },
             {
                 onSuccess: async () => {
-                    goto(resolve(redirectTo as Pathname));
+                    console.log(`login success, redirecting to : ${redirectTo}`);
+                    await goto(resolve(redirectTo as Pathname));
                     invalidateAll();
                 },
                 onError: (ctx) => {

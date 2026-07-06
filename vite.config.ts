@@ -44,7 +44,10 @@ export default defineConfig(({ mode }) => {
                     '$remote': path.resolve(__dirname, './src/lib/remote'),
                     '$remote/*': path.resolve(__dirname, './src/lib/remote/*'),
                 },
-                experimental: { remoteFunctions: true },
+                experimental: {
+                    // explicitEnvironmentVariables: true,
+                    remoteFunctions: true
+                },
                 adapter: adapter(),
                 typescript: {
                     config: (config) => ({
