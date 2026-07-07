@@ -1,0 +1,1 @@
+../../../schema/default/auth.schema.ts

@@ -51,10 +51,17 @@
 
 <!-- Overlay player -->
 <Modal.Root bind:open={hqplayer.open}>
-    <Modal.Content class="flex flex-col h-full w-full min-w-3/4 justify-center">
-        <!-- <Modal.Header> -->
-        <!--     <Modal.Title>{hqplayer.name}</Modal.Title> -->
-        <!-- </Modal.Header> -->
+    <Modal.Content class="flex flex-col h-1/2 md:h-full w-full md:min-w-4/5 justify-start bg-muted/50">
+        <Modal.Header>
+            <Modal.Title>
+                <Badge
+                    variant="secondary"
+                    class="bg-background/80 backdrop-blur-md px-3 py-1 font-medium shadow-sm text-base"
+                >
+                    {hqplayer.name}
+                </Badge>
+            </Modal.Title>
+        </Modal.Header>
         <Field.Field class="flex-1 justify-center h-full w-full">
             <video
                 bind:this={hqplayer.ref}
@@ -77,7 +84,6 @@
         <Card.Root
             class="relative overflow-y-auto bg-muted aspect-video flex items-center justify-center border-2 border-border group rounded-xl"
         >
-            <!-- In production, assign srcObject using an action or element reference -->
             <video
                 onclick={() => {
                     hqplayer.play(stream.name);

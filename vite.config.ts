@@ -45,6 +45,11 @@ export default defineConfig(({ mode }) => {
                     '$server/*': path.resolve(__dirname, './src/lib/server/*'),
                     '$remote': path.resolve(__dirname, './src/lib/remote'),
                     '$remote/*': path.resolve(__dirname, './src/lib/remote/*'),
+                    // Database
+                    '$db': path.resolve(__dirname, './src/lib/server/db'),
+                    '$db/*': path.resolve(__dirname, './src/lib/server/db/*'),
+                    '$schema': path.resolve(__dirname, './src/lib/schema'),
+                    '$schema/*': path.resolve(__dirname, './src/lib/schema/*'),
                 },
                 experimental: {
                     // explicitEnvironmentVariables: true,

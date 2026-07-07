@@ -26,7 +26,7 @@ const items: MenuItem[] = [
         type: 'public'
     },
     {
-        title: 'Media MTX',
+        title: 'MediaMTX',
         url: '/video',
         icon: 'TvMinimalPlay',
         type: 'private'

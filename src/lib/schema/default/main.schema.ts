@@ -1,5 +1,5 @@
 import { pgTable, text, serial, timestamp, index } from 'drizzle-orm/pg-core';
-import { user } from '$lib/schema/auth.schema';
+import { user } from './auth.schema';
 import { sql } from 'drizzle-orm';
 
 export const post = pgTable(

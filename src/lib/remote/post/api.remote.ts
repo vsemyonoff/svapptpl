@@ -1,8 +1,8 @@
 import { command, form, getRequestEvent, query } from '$app/server';
-import { post } from '$lib/schema/main.schema';
+import { post } from '$schema/default/main.schema';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { db } from '$server/db';
+import { db } from '$db/default';
 import * as v from 'valibot';
 
 export const index = query(async () => {

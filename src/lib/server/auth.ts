@@ -1,6 +1,6 @@
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
-import * as authSchema from '$lib/schema/auth.schema';
+import * as authSchema from '$schema/default/auth.schema';
 import { username } from 'better-auth/plugins';
 import { getRequestEvent } from '$app/server';
 import { admin } from 'better-auth/plugins';
@@ -8,7 +8,7 @@ import { env } from '$env/dynamic/private';
 import type { Pathname } from '$app/types';
 import { betterAuth } from 'better-auth';
 import { resolve } from '$app/paths';
-import { db } from '$lib/server/db';
+import { db } from '$db/default';
 
 export const authServer = betterAuth({
     baseURL: `${env.AUTH_PROT || env.PROT}://${env.AUTH_HOST || env.HOST}:${env.AUTH_PORT || env.PORT}`,

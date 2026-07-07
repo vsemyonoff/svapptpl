@@ -18,7 +18,7 @@
     bind:ref
     variant="ghost"
     size="icon"
-    class={cn('', className)}
+    class={cn('hidden md:flex', className)}
     type="button"
     onclick={() => {
         sidebar.toggle();

@@ -4,7 +4,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { authServer } from '$lib/server/auth';
 import type { Handle } from '@sveltejs/kit';
 import { building } from '$app/environment';
-import { db } from '$server/db';
+import { db } from '$db/default';
 
 export const init: ServerInit = async () => {
     if (building) return;

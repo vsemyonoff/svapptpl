@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-orm/valibot';
-import { post } from '$lib/schema/main.schema';
+import { post } from '$schema/default/main.schema';
 import * as v from 'valibot';
 
 const selectSchema = createSelectSchema(post);
